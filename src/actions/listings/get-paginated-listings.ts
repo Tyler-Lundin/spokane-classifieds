@@ -1,4 +1,4 @@
-import { DUMMY_LISTINGS } from "@/data/placeholder.data";
+import { DUMMY_LISTINGS } from "@/data/listings.data";
 
 
 export async function getPaginatedListings(page: string, category: string, search: string, sort: string, order: string) {

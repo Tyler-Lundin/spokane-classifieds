@@ -4,7 +4,7 @@ import Logo from "../ui/logo";
 import Links from "./links";
 
 
-const INITIAL_NAV_CLASSNAME = cn(" h-64 overflow-hidden flex flex-col items-center justify-center gap-4");
+const INITIAL_NAV_CLASSNAME = cn(" h-64 overflow-hidden flex flex-col items-center justify-center gap-4 bg-white dark:bg-black");
 
 
 export default function InitialNav() {

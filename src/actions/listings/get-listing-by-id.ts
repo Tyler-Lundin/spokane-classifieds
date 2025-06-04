@@ -1,4 +1,4 @@
-import { DUMMY_LISTINGS } from "@/data/placeholder.data";
+import { DUMMY_LISTINGS } from "@/data/listings.data";
 
 
 export default async function getListingById(id: string) {

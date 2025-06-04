@@ -1,6 +1,6 @@
 "use server";
 
-import { DUMMY_LISTINGS } from "@/data/placeholder.data";
+import { DUMMY_LISTINGS } from "@/data/listings.data";
 import { Listing } from "@/types/app.types";
 
 

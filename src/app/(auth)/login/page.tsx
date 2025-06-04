@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-[#f4f1ea] py-12 px-4">
+    <main className="min-h-screen bg-[#f4f1ea] dark:bg-black py-12 px-4 text-black dark:text-white">
       <div className="max-w-md mx-auto">
-        <div className="relative border-2 border-black bg-white p-8 shadow-lg">
+        <div className="relative border-2 border-black bg-white p-8 shadow-lg dark:bg-black dark:border-white">
           {/* Paper texture overlay */}
           <div className="absolute inset-0 bg-[url('/paper-texture.png')] opacity-10 pointer-events-none" />
           
@@ -22,7 +22,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   id="email"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} dark:bg-black dark:border-white  w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Enter your email"
                 />
               </div>
@@ -34,14 +34,14 @@ export default function LoginPage() {
                 <input
                   type="password"
                   id="password"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} dark:bg-black dark:border-white w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Enter your password"
                 />
               </div>
 
               <button
                 type="submit"
-                className={`${garamond.className} w-full py-3 px-4 border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white transition-colors duration-200 font-medium`}
+                className={`${garamond.className} w-full dark:bg-black dark:border-white py-3 px-4 border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white transition-colors duration-200 font-medium`}
               >
                 Sign In
               </button>

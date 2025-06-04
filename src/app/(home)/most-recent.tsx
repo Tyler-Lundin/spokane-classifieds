@@ -6,10 +6,10 @@ export default async function HomeMostRecent() {
     const mostRecentListings = await getMostRecentListings({ limit: 5 });
     
     return (
-        <section className="py-12 px-4">
+        <section className="py-12 px-4 bg-white dark:bg-black">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold">Latest Listings</h2>
+                    <h2 className="text-2xl font-bold text-black dark:text-white">Latest Listings</h2>
                     <Link 
                         href="/listings"
                         className="text-sm"

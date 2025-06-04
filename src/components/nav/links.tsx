@@ -12,7 +12,7 @@ export default function Links({ className }: { className?: string }) {
         <ul className={cn(UL_CN, className)}>
             {NAV_LINKS.map((link) => (
                 <li key={link.label}>
-                    <Link href={link.href} className={cn("text-lg hover:blur-[3px] transition-all duration-300 blur-[0px]", garamond.className)}>{link.label}</Link>
+                    <Link href={link.href} className={cn("text-lg hover:blur-[3px] text-black dark:text-white transition-all duration-300 blur-[0px]", garamond.className)}>{link.label}</Link>
                 </li>
             ))}
         </ul>

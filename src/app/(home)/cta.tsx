@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function HomeCTA() {
     return (
-        <section className="py-16 px-4">
+        <section className="py-16 px-4 bg-white text-black dark:bg-black dark:text-white">
             <div className="max-w-4xl mx-auto text-center space-y-8">
                 <div className="space-y-4">
                     <h1 className="text-4xl font-bold">

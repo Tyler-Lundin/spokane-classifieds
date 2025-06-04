@@ -8,11 +8,11 @@ export default function HomeHero() {
   const totalUserCount = 1; // TODO: get this from the database
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden rounded-md bg-white dark:bg-black">
+    <section className="py-20 px-4 relative overflow-hidden rounded-md bg-white dark:bg-black min-h-[500px]">
 
-    <div className="opacity-50">
-    <Image src="/images/hero.webp" alt="Hero" width={2500} height={2500} className="absolute inset-0 object-cover sepia opacity-50 pointer-events-none select-none" />
-    <Image src="/images/paper-texture.webp" alt="Paper Texture" width={2500} height={2500} className="absolute inset-0 object-cover opacity-75 grayscale brightness-125 z-50 pointer-events-none select-none dark:invert" />
+    <div className="opacity-50 absolute inset-0 h-full">
+    <Image src="/images/hero.webp" alt="Hero" fill className="object-cover sepia opacity-50 pointer-events-none select-none" />
+    <Image src="/images/paper-texture.webp" alt="Paper Texture" fill className="object-cover opacity-75 grayscale brightness-125 z-50 pointer-events-none select-none dark:invert" />
     </div>
 
       <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8">
@@ -34,13 +34,13 @@ export default function HomeHero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/listings"
-            className={`${garamond.className} w-full sm:w-auto px-8 py-4 text-lg border-2 border-black bg-[#fefcf9] dark:bg-pink-700/50 hover:bg-black hover:text-white transition-all duration-200 shadow-sm dark:hover:blur-[2px] dark:hover:bg-white blur-[0px] dark:hover:text-black`}
+            className={`${garamond.className} w-full sm:w-auto px-8 py-4 text-lg border-2 border-black dark:bg-[#fefcf9] bg-black text-white dark:bg-pink-700/50 hover:bg-white hover:text-black transition-all duration-200 shadow-sm hover:blur-[2px] dark:hover:bg-white blur-[0px] dark:hover:text-black`}
           >
             Browse Listings
           </Link>
           <Link
             href="/post"
-            className={`${garamond.className} w-full sm:w-auto px-8 py-4 text-lg border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white duration-200 shadow-sm dark:bg-pink-700/50 dark:hover:blur-[2px] dark:hover:bg-white blur-[0px] transition-all dark:hover:text-black`}
+            className={`${garamond.className} w-full sm:w-auto px-8 py-4 text-lg border-2 border-black bg-black dark:bg-[#fefcf9] text-white dark:bg-pink-700/50 hover:bg-white hover:text-black duration-200 shadow-sm dark:bg-pink-700/50 hover:blur-[2px] dark:hover:bg-white blur-[0px] transition-all dark:hover:text-black`}
           >
             Post a Listing
           </Link>

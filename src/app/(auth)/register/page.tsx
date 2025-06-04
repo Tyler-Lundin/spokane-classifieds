@@ -3,14 +3,14 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <main className="min-h-screen bg-[#f4f1ea] py-12 px-4">
+    <main className="min-h-screen bg-[#f4f1ea] dark:bg-black py-12 px-4 text-black dark:text-white">
       <div className="max-w-md mx-auto">
-        <div className="relative border-2 border-black bg-white p-8 shadow-lg">
+        <div className="relative border-2 border-black bg-white p-8 shadow-lg dark:bg-black dark:border-white">
           {/* Paper texture overlay */}
           <div className="absolute inset-0 bg-[url('/paper-texture.png')] opacity-10 pointer-events-none" />
           
           <div className="relative z-10">
-            <h1 className={`${oldStandard.className} text-3xl font-bold text-center mb-8 uppercase tracking-wider`}>
+            <h1 className={`${oldStandard.className} text-3xl font-bold text-black dark:text-white text-center mb-8 uppercase tracking-wider`}>
               Create Account
             </h1>
 
@@ -22,7 +22,7 @@ export default function RegisterPage() {
                 <input
                   type="text"
                   id="name"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} w-full px-4 dark:bg-black dark:border-white py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Enter your full name"
                 />
               </div>
@@ -34,7 +34,7 @@ export default function RegisterPage() {
                 <input
                   type="email"
                   id="email"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Enter your email"
                 />
               </div>
@@ -46,7 +46,7 @@ export default function RegisterPage() {
                 <input
                   type="password"
                   id="password"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Create a password"
                 />
               </div>
@@ -58,14 +58,14 @@ export default function RegisterPage() {
                 <input
                   type="password"
                   id="confirmPassword"
-                  className={`${garamond.className} w-full px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
+                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
                   placeholder="Confirm your password"
                 />
               </div>
 
               <button
                 type="submit"
-                className={`${garamond.className} w-full py-3 px-4 border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white transition-colors duration-200 font-medium`}
+                className={`${garamond.className} w-full dark:bg-black dark:border-white py-3 px-4 border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white transition-colors duration-200 font-medium`}
               >
                 Create Account
               </button>

@@ -34,7 +34,7 @@ export const DUMMY_LISTINGS: Listing[] = [
     {
         id: "2",
         userId: "1",
-        categoryId: "2",
+        categoryId: "3",
         title: "1995 Land Rover Discovery 1",
         type: ListingType.VEHICLE,
         description: "This is a 1995 Land Rover Discovery 1, it is a 4x4 and has 121,000 miles on it.",

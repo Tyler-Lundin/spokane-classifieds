@@ -1,4 +1,4 @@
-import { DUMMY_USERS } from "@/data/placeholder.data";
+import { DUMMY_USERS } from "@/data/listings.data";
 
 export default async function getUserById(id: string) {
     // TODO: Replace with actual database call

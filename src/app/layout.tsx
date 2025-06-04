@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${garamond.variable} ${oldStandard.variable} antialiased`}
+        className={`${garamond.variable} ${oldStandard.variable} antialiased bg-white dark:bg-black`}
       >
-        <ThemeProvider>
+        <ThemeProvider >
           <Nav />
           {children}
           <Footer />
