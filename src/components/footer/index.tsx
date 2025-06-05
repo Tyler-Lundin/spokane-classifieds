@@ -23,7 +23,7 @@ export default function Footer() {
                         &copy; {new Date().getFullYear()} All rights reserved
                     </div>
                     <div className="text-xs text-gray-600 dark:text-white italic">
-                        "Your trusted local marketplace"
+                        &quot;Your trusted local marketplace&quot;
                     </div>
                 </div>
             </div>

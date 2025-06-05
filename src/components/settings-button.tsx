@@ -42,7 +42,7 @@ export default function SettingsButton() {
           <div className="space-y-2">
             <button
               onClick={toggleTheme}
-              className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+              className="w-full text-left text-black dark:text-white px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
             >
               {theme === 'light' ? (
                 <Moon className="w-4 h-4" />

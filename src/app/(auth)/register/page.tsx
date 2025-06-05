@@ -1,87 +1,47 @@
-import { garamond, oldStandard } from "@/app/fonts";
-import Link from "next/link";
+'use client';
+
+import { useState } from 'react';
+import AuthForm, { AuthFormData } from '@/components/auth/AuthForm';
+import { createUser } from '@/data/users.data';
+import { createVerificationToken } from '@/data/verification-tokens.data';
+import { createUserSettings } from '@/data/user-settings.data';
 
 export default function RegisterPage() {
+  const [, setError] = useState<string>('');
+
+  const handleRegister = async (data: AuthFormData) => {
+    try {
+      // In a real app, we would hash the password here
+      const user = createUser({
+        firstName: data.firstName!,
+        lastName: data.lastName!,
+        email: data.email,
+        phone: data.phone!,
+        passwordHash: 'hashed_password_here', // In real app, this would be properly hashed
+        isVerified: false,
+        isBanned: false,
+      });
+
+      // Create default user settings
+      createUserSettings(user.id);
+
+      // Create email verification token
+      const verificationToken = createVerificationToken(user.id, 'email_verification');
+
+      // In a real app, we would send the verification email here
+      console.log('Verification token:', verificationToken.token);
+      console.log('Created user:', user);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      throw err;
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-[#f4f1ea] dark:bg-black py-12 px-4 text-black dark:text-white">
-      <div className="max-w-md mx-auto">
-        <div className="relative border-2 border-black bg-white p-8 shadow-lg dark:bg-black dark:border-white">
-          {/* Paper texture overlay */}
-          <div className="absolute inset-0 bg-[url('/paper-texture.png')] opacity-10 pointer-events-none" />
-          
-          <div className="relative z-10">
-            <h1 className={`${oldStandard.className} text-3xl font-bold text-black dark:text-white text-center mb-8 uppercase tracking-wider`}>
-              Create Account
-            </h1>
-
-            <form className="space-y-6">
-              <div>
-                <label htmlFor="name" className={`${garamond.className} block text-sm font-medium mb-2`}>
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className={`${garamond.className} w-full px-4 dark:bg-black dark:border-white py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className={`${garamond.className} block text-sm font-medium mb-2`}>
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password" className={`${garamond.className} block text-sm font-medium mb-2`}>
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
-                  placeholder="Create a password"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="confirmPassword" className={`${garamond.className} block text-sm font-medium mb-2`}>
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  className={`${garamond.className} w-full dark:bg-black dark:border-white px-4 py-2 border-2 border-black bg-[#fefcf9] focus:outline-none focus:ring-2 focus:ring-black`}
-                  placeholder="Confirm your password"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className={`${garamond.className} w-full dark:bg-black dark:border-white py-3 px-4 border-2 border-black bg-[#fefcf9] hover:bg-black hover:text-white transition-colors duration-200 font-medium`}
-              >
-                Create Account
-              </button>
-            </form>
-
-            <div className={`${garamond.className} mt-6 text-center text-sm`}>
-              <p>
-                Already have an account?{" "}
-                <Link href="/login" className="underline hover:text-gray-600">
-                  Sign in here
-                </Link>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    <AuthForm
+      type="register"
+      onSubmit={handleRegister}
+    />
   );
 } 

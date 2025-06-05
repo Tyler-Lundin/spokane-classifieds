@@ -1,184 +1,92 @@
-import getListingById from '@/actions/listings/get-listing-by-id';
-import getUserById from '@/actions/users/get-user-by-id';
+import { notFound } from 'next/navigation';
+import { DUMMY_LISTINGS } from '@/data/listings.data';
 import { ImageSlider } from '@/components/ui/image-slider';
-import { Listing, ListingType, User } from '@/types/app.types';
-import { garamond, oldStandard } from "@/app/fonts";
-import Image from "next/image";
-import { cn } from '@/lib/utils';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { HeartIcon, Share2Icon, FlagIcon } from 'lucide-react';
+import PageContainer from '@/components/layout/page-container';
 
-// Listing
-// export interface Listing {
-//   id: string;
-//   userId: string;
-//   categoryId: string;
-//   title: string;
-//   type: ListingType;
-//   willTrade?: boolean;
-//   tradeFor?: string | null;
-//   description: string;
-//   price: number | null;
-//   currency: string;
-//   imageUrls: string[];
-//   location: Location;
-//   status: ListingStatus;
-//   condition: ItemCondition;
-//   tags?: string[];
-//   viewCount: number;
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
+interface PageProps {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
+export default async function ListingPage(props: PageProps) {
+  const { id } = await props.params;
+  const listing = DUMMY_LISTINGS.find((l) => l.id === id);
 
-export default async function ListingDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
-  const listing = await getListingById(id);
-  const listingUser = listing?.userId ? await getUserById(listing.userId) : null;
+  if (!listing) {
+    notFound();
+  }
 
   return (
-    <main className="min-h-screen bg-[#f4f1ea] dark:bg-black py-12 px-4">
+    <PageContainer>
       <div className="max-w-7xl mx-auto">
-        <Link 
-          href="/categories"
-          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to Categories
-        </Link>
-
-        <div className="relative border-2 border-black dark:border-white bg-white dark:bg-black shadow-lg">
-          {/* Paper texture overlay */}
-          <div className="absolute inset-0 opacity-10">
-            <Image
-              src="/images/paper-texture.webp"
-              alt="Paper Texture"
-              fill
-              className="object-cover mix-blend-multiply"
-            />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white dark:bg-black p-4 rounded-lg">
+          <div className="relative h-[500px] rounded-lg overflow-hidden">
+            <ImageSlider images={listing.imageUrls} />
           </div>
 
-          <div className="relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              {/* Image Section */}
-              <div className="relative border-r border-black dark:border-white">
-                <div className="sticky top-0">
-                  <div className="aspect-square relative">
-                    <ImageSlider images={listing?.imageUrls || []} />
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-black dark:text-white">{listing.title}</h1>
+              <p className="mt-2 text-2xl font-semibold text-indigo-600 dark:text-indigo-400">
+                {formatPrice(listing.price)}
+              </p>
+            </div>
 
-              {/* Content Section */}
-              <div className="p-8 space-y-8">
-                <div className="space-y-6">
-                  <Title title={listing?.title || ""} />
-                  <RenderType type={listing?.type || ListingType.ITEM} />
-                  <Details listing={listing} />
-                  <ContactInfo listingUser={listingUser} />
+            <div className="flex items-center space-x-4">
+              <Button variant="outline" size="icon"><HeartIcon className="h-5 w-5" /></Button>
+              <Button variant="outline" size="icon"><Share2Icon className="h-5 w-5" /></Button>
+              <Button variant="outline" size="icon"><FlagIcon className="h-5 w-5" /></Button>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h2 className="text-lg font-medium text-black dark:text-white">Description</h2>
+              <p className="mt-2 text-gray-600 dark:text-gray-300">{listing.description}</p>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <h2 className="text-lg font-medium text-black dark:text-white">Details</h2>
+              <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Condition</dt>
+                  <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">{listing.condition}</dd>
                 </div>
-              </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Type</dt>
+                  <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">{listing.type}</dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Location</dt>
+                  <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                    {typeof listing.location === 'string' 
+                      ? listing.location 
+                      : `${listing.location.city}, ${listing.location.state}`}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Posted</dt>
+                  <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                    {new Date(listing.createdAt).toLocaleDateString()}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+              <Button className="w-full">Contact Seller</Button>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </PageContainer>
   );
 }
 
-function CategoryBadge({ category }: { category: string }) {
-  return (
-    <div className={`${garamond.className} bg-[#f4f1ea] dark:bg-gray-800 text-black dark:text-white text-sm font-medium px-3 py-1 border border-black dark:border-white inline-block`}>
-      {category}
-    </div>
-  )
-}
-
-function Title({ title }: { title: string }) {
-  return (
-    <h1 className={`${oldStandard.className} text-4xl font-bold tracking-tight border-b-2 border-black dark:border-white pb-4 text-black dark:text-white`}>
-      {title}
-    </h1>
-  )
-}
-
-function Details({ listing }: { listing?: Listing }) {
-  if (!listing) return null;
-
-  return (
-    <div className={`${garamond.className} space-y-6 text-black dark:text-white`}>
-      <div className="text-lg italic leading-relaxed">
-        {listing.description}
-      </div>
-
-      <div className="grid grid-cols-2 gap-6 border-t border-b border-black dark:border-white py-6">
-        <div>
-          <div className="text-sm uppercase tracking-wider font-bold mb-1">Price</div>
-          <div className="text-2xl font-bold">
-            {listing.price ? `${listing.currency}${listing.price.toLocaleString()}` : 'Contact for price'}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-sm uppercase tracking-wider font-bold mb-1">Location</div>
-          <div className="text-lg">{listing.location.city}, {listing.location.state}</div>
-        </div>
-
-        <div>
-          <div className="text-sm uppercase tracking-wider font-bold mb-1">Condition</div>
-          <div className="text-lg">{listing.condition}</div>
-        </div>
-
-        <div>
-          <div className="text-sm uppercase tracking-wider font-bold mb-1">Posted</div>
-          <div className="text-lg">{listing.createdAt.toLocaleDateString()}</div>
-        </div>
-      </div>
-
-      {listing.tags && listing.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {listing.tags.map((tag, index) => (
-            <CategoryBadge key={index} category={tag} />
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function ContactInfo({ listingUser }: { listingUser?: User | null }) {
-  if (!listingUser) return null;
-
-  return (
-    <div className={`${garamond.className} border-t border-black dark:border-white pt-6 text-black dark:text-white`}>
-      <h2 className="text-xl font-bold uppercase tracking-wider mb-4">Contact Information</h2>
-      <div className="space-y-2">
-        <p className="text-lg font-bold">{listingUser.firstName} {listingUser.lastName.slice(0, 1)}.</p>
-        <p className="text-lg">{listingUser.email}</p>
-        {listingUser.phone && <p className="text-lg">{listingUser.phone}</p>}
-      </div>
-    </div>
-  )
-}
-
-function RenderType({ type }: { type: ListingType }) {
-  const typeLabels: Record<ListingType, string> = {
-    [ListingType.ITEM]: "Item for Sale",
-    [ListingType.VEHICLE]: "Vehicle Listing",
-    [ListingType.JOB]: "Job Opportunity",
-    [ListingType.HOUSING]: "Housing",
-    [ListingType.SERVICE]: "Service",
-    [ListingType.OTHER]: "Other",
-  };
-
-  return (
-    <div className={`${garamond.className} text-sm uppercase tracking-wider font-bold text-gray-600 dark:text-gray-300`}>
-      {typeLabels[type]}
-    </div>
-  )
+function formatPrice(price: number | null | undefined) {
+  if (price === null || price === undefined) return 'Contact for price';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(price);
 }

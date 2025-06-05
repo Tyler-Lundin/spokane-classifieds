@@ -1,11 +1,19 @@
 "use client";
-import { CATEGORIES } from "@/data/categories.data";
-import { ItemCondition, Listing, ListingStatus, ListingType, NewListingForm } from "@/types/app.types";
+import { DUMMY_LISTINGS } from "@/data/listings.data";
+import { ItemCondition, ListingType, NewListingForm } from "@/types/app.types";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export default function CreateListingForm() {
-    const [step, setStep] = useState<'type' | 'details'>('type');
+interface CreateListingFormProps {
+  mode?: 'create' | 'edit';
+  listingId?: string;
+}
+
+export default function CreateListingForm({ mode = 'create', listingId }: CreateListingFormProps) {
+    const router = useRouter();
+    const [step, setStep] = useState<'type' | 'details'>(mode === 'edit' ? 'details' : 'type');
+    const [loading, setLoading] = useState(false);
     const [newListing, setNewListing] = useState<NewListingForm>({
         categoryId: "",
         title: "",
@@ -31,6 +39,34 @@ export default function CreateListingForm() {
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
     const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
+    // Fetch listing data if in edit mode
+    useEffect(() => {
+        if (mode === 'edit' && listingId) {
+            // Find the listing in DUMMY_LISTINGS
+            const listing = DUMMY_LISTINGS.find(l => l.id === listingId);
+            if (listing) {
+                setNewListing({
+                    categoryId: listing.categoryId,
+                    title: listing.title,
+                    description: listing.description,
+                    price: listing.price || 0,
+                    currency: listing.currency,
+                    imageUrls: listing.imageUrls,
+                    location: listing.location,
+                    condition: listing.condition,
+                    type: listing.type,
+                    willTrade: listing.willTrade,
+                    tradeFor: listing.tradeFor || [],
+                    tags: listing.tags || [],
+                    featured: listing.featured || false,
+                    featuredStrength: listing.featuredStrength || 0,
+                    featuredUntil: listing.featuredUntil || new Date(),
+                });
+                setImagePreviewUrls(listing.imageUrls);
+            }
+        }
+    }, [mode, listingId]);
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         const remainingSlots = 9 - selectedImages.length;
@@ -54,6 +90,29 @@ export default function CreateListingForm() {
         };
     }, [imagePreviewUrls]);
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        
+        try {
+            if (mode === 'edit') {
+                // TODO: Implement edit submission
+                console.log('Editing listing:', listingId, newListing);
+            } else {
+                // TODO: Implement create submission
+                console.log('Creating new listing:', newListing);
+            }
+            
+            // Redirect to dashboard after successful submission
+            router.push('/dashboard');
+        } catch (error) {
+            console.error('Error submitting listing:', error);
+            // TODO: Show error message to user
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const renderTypeSelection = () => {
         const typeLabels: Record<ListingType, string> = {
             [ListingType.ITEM]: "Item for Sale",
@@ -66,7 +125,7 @@ export default function CreateListingForm() {
 
         return (
             <div className="space-y-6">
-                <h2 className="text-xl font-bold uppercase tracking-widest text-center">
+                <h2 className="text-xl font-bold uppercase tracking-widest text-center text-black dark:text-white">
                     What would you like to list?
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -78,12 +137,12 @@ export default function CreateListingForm() {
                                 setNewListing(prev => ({ ...prev, type: value as ListingType }));
                                 setStep('details');
                             }}
-                            className="p-6 border-2 border-black hover:border-b-4 transition-all duration-200 bg-white hover:bg-gray-50"
+                            className="p-6 border-2 border-black dark:border-white hover:border-b-4 transition-all duration-200 bg-white dark:bg-black text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-900"
                         >
                             <h3 className="text-lg font-bold uppercase tracking-wide mb-2">
                                 {typeLabels[value as ListingType]}
                             </h3>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {getTypeDescription(value as ListingType)}
                             </p>
                         </button>
@@ -118,7 +177,7 @@ export default function CreateListingForm() {
                 return (
                     <>
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="price" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="price" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Price
                             </label>
                             <input
@@ -127,12 +186,12 @@ export default function CreateListingForm() {
                                 name="price"
                                 value={newListing.price}
                                 onChange={(e) => setNewListing({ ...newListing, price: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="currency" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="currency" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Currency
                             </label>
                             <select
@@ -140,14 +199,14 @@ export default function CreateListingForm() {
                                 name="currency"
                                 value={newListing.currency}
                                 onChange={(e) => setNewListing({ ...newListing, currency: e.target.value })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             >
                                 <option value="USD">USD</option>
                             </select>
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="condition" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="condition" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Condition
                             </label>
                             <select
@@ -155,7 +214,7 @@ export default function CreateListingForm() {
                                 name="condition"
                                 value={newListing.condition}
                                 onChange={(e) => setNewListing({ ...newListing, condition: e.target.value as ItemCondition })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             >
                                 {Object.entries(ItemCondition).map(([key, value]) => (
                                     <option key={key} value={value}>
@@ -170,7 +229,7 @@ export default function CreateListingForm() {
                 return (
                     <>
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="price" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="price" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Price
                             </label>
                             <input
@@ -179,12 +238,12 @@ export default function CreateListingForm() {
                                 name="price"
                                 value={newListing.price}
                                 onChange={(e) => setNewListing({ ...newListing, price: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="year" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="year" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Year
                             </label>
                             <input
@@ -193,12 +252,12 @@ export default function CreateListingForm() {
                                 name="year"
                                 value={newListing.year || ''}
                                 onChange={(e) => setNewListing({ ...newListing, year: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="mileage" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="mileage" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Mileage
                             </label>
                             <input
@@ -207,7 +266,7 @@ export default function CreateListingForm() {
                                 name="mileage"
                                 value={newListing.mileage || ''}
                                 onChange={(e) => setNewListing({ ...newListing, mileage: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
                     </>
@@ -216,7 +275,7 @@ export default function CreateListingForm() {
                 return (
                     <>
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="salary" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="salary" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Salary
                             </label>
                             <input
@@ -225,12 +284,12 @@ export default function CreateListingForm() {
                                 name="salary"
                                 value={newListing.salary || ''}
                                 onChange={(e) => setNewListing({ ...newListing, salary: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="company" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="company" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Company
                             </label>
                             <input
@@ -239,12 +298,12 @@ export default function CreateListingForm() {
                                 name="company"
                                 value={newListing.company || ''}
                                 onChange={(e) => setNewListing({ ...newListing, company: e.target.value })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="employmentType" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="employmentType" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Employment Type
                             </label>
                             <select
@@ -252,7 +311,7 @@ export default function CreateListingForm() {
                                 name="employmentType"
                                 value={newListing.employmentType || ''}
                                 onChange={(e) => setNewListing({ ...newListing, employmentType: e.target.value as 'full-time' | 'part-time' | 'contract' | 'temporary' })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             >
                                 <option value="full-time">Full Time</option>
                                 <option value="part-time">Part Time</option>
@@ -266,7 +325,7 @@ export default function CreateListingForm() {
                 return (
                     <>
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="rent" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="rent" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Rent
                             </label>
                             <input
@@ -275,12 +334,12 @@ export default function CreateListingForm() {
                                 name="rent"
                                 value={newListing.rent || ''}
                                 onChange={(e) => setNewListing({ ...newListing, rent: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="bedrooms" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="bedrooms" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Bedrooms
                             </label>
                             <input
@@ -289,12 +348,12 @@ export default function CreateListingForm() {
                                 name="bedrooms"
                                 value={newListing.bedrooms || ''}
                                 onChange={(e) => setNewListing({ ...newListing, bedrooms: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="bathrooms" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="bathrooms" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Bathrooms
                             </label>
                             <input
@@ -303,12 +362,12 @@ export default function CreateListingForm() {
                                 name="bathrooms"
                                 value={newListing.bathrooms || ''}
                                 onChange={(e) => setNewListing({ ...newListing, bathrooms: e.target.valueAsNumber })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             />
                         </div>
 
                         <div className="flex flex-col gap-1 z-10 relative">
-                            <label htmlFor="leaseType" className="text-sm uppercase tracking-wide font-bold">
+                            <label htmlFor="leaseType" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
                                 Lease Type
                             </label>
                             <select
@@ -316,7 +375,7 @@ export default function CreateListingForm() {
                                 name="leaseType"
                                 value={newListing.leaseType || ''}
                                 onChange={(e) => setNewListing({ ...newListing, leaseType: e.target.value as 'month-to-month' | '6-months' | '1-year' | '2-years' })}
-                                className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
                             >
                                 <option value="month-to-month">Month to Month</option>
                                 <option value="6-months">6 Months</option>
@@ -332,155 +391,180 @@ export default function CreateListingForm() {
     };
 
     return (
-        <form
-            className="max-w-2xl mx-auto border border-black dark:invert bg-[#f5f2e8] p-6 shadow-lg font-serif text-gray-900 space-y-6 relative h-full"
-        >
-            {/* Paper texture overlay */}
-            <div className="absolute inset-0 bg-[url('/paper-texture.png')] opacity-10 z-0 pointer-events-none" />
-
-            <h1 className="text-2xl font-bold uppercase tracking-widest text-center border-b border-black pb-2 z-10 relative">
-                Create New Listing
-            </h1>
-
+        <form onSubmit={handleSubmit} className="space-y-8">
             {step === 'type' ? (
                 renderTypeSelection()
             ) : (
-                <>
-                    <div className="flex items-center gap-2 mb-4">
-                        <button
-                            type="button"
-                            onClick={() => setStep('type')}
-                            className="text-sm uppercase tracking-wide hover:underline"
-                        >
-                            ← Back to Type Selection
-                        </button>
-                    </div>
-
-                    {/* FIELD GROUP */}
-                    <div className="flex flex-col gap-1 z-10 relative">
-                        <label htmlFor="title" className="text-sm uppercase tracking-wide font-bold">
-                            Title
-                        </label>
-                        <input
-                            type="text"
-                            id="title"
-                            name="title"
-                            value={newListing.title}
-                            onChange={(e) => setNewListing({ ...newListing, title: e.target.value })}
-                            className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
-                        />
-                    </div>
-
-                    <div className="flex flex-col gap-1 z-10 relative">
-                        <label htmlFor="description" className="text-sm uppercase tracking-wide font-bold">
-                            Description
-                        </label>
-                        <textarea
-                            id="description"
-                            name="description"
-                            value={newListing.description}
-                            onChange={(e) => setNewListing({ ...newListing, description: e.target.value })}
-                            rows={3}
-                            className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
-                        />
-                    </div>
-
-                    {/* Conditionally render fields based on type */}
-                    {renderFieldsForType(newListing.type)}
-
-                    <div className="flex flex-col gap-1 z-10 relative">
-                        <label htmlFor="images" className="text-sm uppercase tracking-wide font-bold">
-                            Images ({selectedImages.length}/9)
-                        </label>
-                        <div className="border border-black p-4 bg-[#fefcf9]">
-                            <input
-                                type="file"
-                                id="images"
-                                name="images"
-                                accept="image/*"
-                                multiple
-                                onChange={handleImageChange}
-                                className="hidden"
-                                disabled={selectedImages.length >= 9}
-                            />
-                            <label 
-                                htmlFor="images" 
-                                className={`block text-center py-2 border-2 border-dashed border-black cursor-pointer transition-colors duration-200 ${
-                                    selectedImages.length >= 9 
-                                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
-                                        : 'hover:bg-black hover:text-white'
-                                }`}
+                <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-bold uppercase tracking-widest text-black dark:text-white">
+                            {mode === 'edit' ? 'Edit Listing Details' : 'Listing Details'}
+                        </h2>
+                        {mode === 'create' && (
+                            <button
+                                type="button"
+                                onClick={() => setStep('type')}
+                                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                             >
-                                {selectedImages.length >= 9 
-                                    ? 'Maximum images reached' 
-                                    : 'Click to upload images'}
+                                Change Type
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Basic Information */}
+                    <div className="space-y-4">
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="title" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
+                                Title
                             </label>
-                            
-                            {/* Image Previews */}
-                            {imagePreviewUrls.length > 0 && (
-                                <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    {imagePreviewUrls.map((url, index) => (
-                                        <div key={url} className="relative aspect-square border border-black">
-                                            <Image
-                                                src={url}
-                                                alt={`Preview ${index + 1}`}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setSelectedImages(prev => prev.filter((_, i) => i !== index));
-                                                    setImagePreviewUrls(prev => prev.filter((_, i) => i !== index));
-                                                }}
-                                                className="absolute top-1 right-1 bg-black/50 text-white p-1 hover:bg-black/75"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    ))}
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                required
+                                value={newListing.title}
+                                onChange={(e) => setNewListing({ ...newListing, title: e.target.value })}
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
+                                placeholder="What are you selling?"
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="description" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
+                                Description
+                            </label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                required
+                                rows={4}
+                                value={newListing.description}
+                                onChange={(e) => setNewListing({ ...newListing, description: e.target.value })}
+                                className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
+                                placeholder="Describe your item in detail..."
+                            />
+                        </div>
+
+                        {renderFieldsForType(newListing.type)}
+                    </div>
+
+                    {/* Location */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-bold uppercase tracking-wide text-black dark:text-white">Location</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="city" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
+                                    City
+                                </label>
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    required
+                                    value={newListing.location.city}
+                                    onChange={(e) => setNewListing({
+                                        ...newListing,
+                                        location: { ...newListing.location, city: e.target.value }
+                                    })}
+                                    className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="state" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
+                                    State
+                                </label>
+                                <input
+                                    type="text"
+                                    id="state"
+                                    name="state"
+                                    required
+                                    value={newListing.location.state}
+                                    onChange={(e) => setNewListing({
+                                        ...newListing,
+                                        location: { ...newListing.location, state: e.target.value }
+                                    })}
+                                    className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
+                                />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <label htmlFor="zip" className="text-sm uppercase tracking-wide font-bold text-black dark:text-white">
+                                    ZIP
+                                </label>
+                                <input
+                                    type="text"
+                                    id="zip"
+                                    name="zip"
+                                    required
+                                    value={newListing.location.zip}
+                                    onChange={(e) => setNewListing({
+                                        ...newListing,
+                                        location: { ...newListing.location, zip: e.target.value }
+                                    })}
+                                    className="bg-white dark:bg-black border border-black dark:border-white px-3 py-1 text-sm tracking-wide text-black dark:text-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Images */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-bold uppercase tracking-wide text-black dark:text-white">Images</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {imagePreviewUrls.map((url, index) => (
+                                <div key={index} className="relative aspect-square">
+                                    <Image
+                                        src={url}
+                                        alt={`Preview ${index + 1}`}
+                                        fill
+                                        className="object-cover rounded-lg"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setImagePreviewUrls(prev => prev.filter((_, i) => i !== index));
+                                            setSelectedImages(prev => prev.filter((_, i) => i !== index));
+                                        }}
+                                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                                    >
+                                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
                                 </div>
+                            ))}
+                            {imagePreviewUrls.length < 9 && (
+                                <label className="relative aspect-square border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 dark:hover:border-gray-500">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        className="hidden"
+                                        onChange={handleImageChange}
+                                    />
+                                    <div className="text-center">
+                                        <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                        <span className="mt-2 block text-sm text-gray-600 dark:text-gray-400">
+                                            Add Images
+                                        </span>
+                                    </div>
+                                </label>
                             )}
                         </div>
                     </div>
 
-                    <fieldset className="flex flex-col gap-1 z-10 relative">
-                        <legend className="text-sm uppercase tracking-wide font-bold">Location</legend>
-                        <input
-                            type="text"
-                            placeholder="City"
-                            value={newListing.location.city}
-                            onChange={(e) =>
-                                setNewListing({ ...newListing, location: { ...newListing.location, city: e.target.value } })
-                            }
-                            className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
-                        />
-                        <input
-                            type="text"
-                            placeholder="State"
-                            value={newListing.location.state}
-                            onChange={(e) =>
-                                setNewListing({ ...newListing, location: { ...newListing.location, state: e.target.value } })
-                            }
-                            className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
-                        />
-                        <input
-                            type="text"
-                            placeholder="ZIP"
-                            value={newListing.location.zip}
-                            onChange={(e) =>
-                                setNewListing({ ...newListing, location: { ...newListing.location, zip: e.target.value } })
-                            }
-                            className="bg-transparent border border-black px-3 py-1 text-sm tracking-wide"
-                        />
-                    </fieldset>
-
-                    <div className="flex justify-center absolute bottom-0 left-1/2 w-fit h-fit -translate-x-1/2 bg-[#f5f2e8] translate-y-1/2">
-                        <button type="submit" className="text-black border-b-6 border-t-1 border-x-1 hover:border-b-2 transition-all duration-300 px-4 py-1 text-2xl uppercase tracking-wide font-bold">
-                            Create Listing
+                    {/* Submit Button */}
+                    <div className="flex justify-end">
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="px-6 py-2 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed"
+                        >
+                            {loading ? 'Saving...' : mode === 'edit' ? 'Save Changes' : 'Create Listing'}
                         </button>
                     </div>
-                </>
+                </div>
             )}
         </form>
     );

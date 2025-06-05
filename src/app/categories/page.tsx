@@ -17,7 +17,7 @@ export default async function CategoriesPage() {
             Browse Categories
           </h1>
           <p className={`${garamond.className} text-lg text-gray-600 dark:text-gray-300 italic max-w-2xl mx-auto mb-8`}>
-            Find what you're looking for in our curated collection of categories
+            Find what you&apos;re looking for in our curated collection of categories
           </p>
 
           {/* Category List with Search */}

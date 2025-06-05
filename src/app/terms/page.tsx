@@ -24,7 +24,7 @@ export default function TermsOfServicePage() {
               <li>Provide accurate and complete information</li>
               <li>Maintain the security of your account</li>
               <li>Comply with all applicable laws</li>
-              <li>Respect other users' rights</li>
+              <li>Respect other users&apos; rights</li>
             </ul>
           </section>
 

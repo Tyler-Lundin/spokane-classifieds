@@ -1,7 +1,5 @@
-import { Category, ItemCondition, ListingType, User } from "@/types/app.types";
-
+import { ItemCondition, ListingType } from "@/types/app.types";
 import { ListingStatus } from "@/types/app.types";
-
 import { Listing } from "@/types/app.types";
 
 export const DUMMY_LISTINGS: Listing[] = [
@@ -248,18 +246,3 @@ export const DUMMY_LISTINGS: Listing[] = [
         featuredUntil: undefined,
       }
 ] satisfies Listing[]
-
-export const DUMMY_USERS: User[] = [
-    {
-        id: "1",
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        phone: "1234567890",
-        passwordHash: "1234567890",
-        isVerified: true,
-        isBanned: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-]

@@ -6,9 +6,10 @@ import { ArrowLeft } from "lucide-react";
 import { CATEGORIES } from "@/data/categories.data";
 import { garamond, oldStandard } from "@/app/fonts";
 
-export default async function CategoryPage({ params }: { params: { id: string } }) {
+export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
     // Find the category by slug
-    const category = CATEGORIES.find(cat => cat.slug === params.id);
+    const { id } = await params;
+    const category = CATEGORIES.find(cat => cat.slug === id);
     
     if (!category) {
         return (

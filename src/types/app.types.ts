@@ -96,6 +96,7 @@ export interface App {
     eventDate?: Date;
     eventLocation?: string;
     eventDescription?: string;
+    analytics?: ListingAnalytics;
   }
 
   export interface NewListingForm {
@@ -198,7 +199,7 @@ export interface App {
     userId: string;
     query: string;
     categoryId?: string;
-    filters: Record<string, any>;
+    filters: Record<string, unknown>;
     frequency: "daily" | "weekly" | "instant";
     createdAt: Date;
     updatedAt: Date;
@@ -279,5 +280,90 @@ export interface App {
     preferredCurrency: string;
     createdAt: Date;
     updatedAt: Date;
+  }
+  
+  // Analytics Types
+  export interface ListingAnalytics {
+    id: string;
+    listingId: string;
+    views: ViewAnalytics;
+    saves: SaveAnalytics;
+    engagement: EngagementAnalytics;
+    performance: PerformanceMetrics;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  export interface ViewAnalytics {
+    total: number;
+    unique: number;
+    byDate: ViewByDate[];
+    bySource: ViewBySource[];
+    byDevice: ViewByDevice[];
+  }
+
+  export interface ViewByDate {
+    date: Date;
+    count: number;
+    uniqueCount: number;
+  }
+
+  export interface ViewBySource {
+    source: ViewSource;
+    count: number;
+    uniqueCount: number;
+  }
+
+  export interface ViewByDevice {
+    device: DeviceType;
+    count: number;
+    uniqueCount: number;
+  }
+
+  export enum ViewSource {
+    SEARCH = "search",
+    CATEGORY = "category",
+    DIRECT = "direct",
+    EXTERNAL = "external",
+    SOCIAL = "social",
+    OTHER = "other"
+  }
+
+  export enum DeviceType {
+    MOBILE = "mobile",
+    DESKTOP = "desktop",
+    TABLET = "tablet",
+    OTHER = "other"
+  }
+
+  export interface SaveAnalytics {
+    total: number;
+    byDate: SaveByDate[];
+    activeUsers: number; // Users who have saved this listing
+  }
+
+  export interface SaveByDate {
+    date: Date;
+    count: number;
+  }
+
+  export interface EngagementAnalytics {
+    messageCount: number;
+    uniqueMessagers: number;
+    averageResponseTime?: number; // in minutes
+    byDate: EngagementByDate[];
+  }
+
+  export interface EngagementByDate {
+    date: Date;
+    messageCount: number;
+    uniqueMessagers: number;
+  }
+
+  export interface PerformanceMetrics {
+    conversionRate?: number; // Views to messages ratio
+    averageViewDuration?: number; // in seconds
+    bounceRate?: number; // Percentage of users who leave without interaction
+    lastUpdated: Date;
   }
   

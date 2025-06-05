@@ -1,18 +1,24 @@
 import { Listing } from "@/types/app.types";
-import Image from "next/image";
 import Link from "next/link";
 import ImageDisplay from "./image-display";
+import FavoriteButton from "./favorite-button";
+import { DUMMY_FAVORITES } from "@/data/favorites.data";
 
 export default function ListingPreview({
     id,
-    userId,
-    categoryId,
+    // userId,
+    // categoryId,
     title,
     description,
     price,
     currency,
     imageUrls,
 }: Partial<Listing>) {
+    // Check if this listing is favorited by the current user (using userId "1" for now)
+    const isFavorited = DUMMY_FAVORITES.some(
+        fav => fav.listingId === id && fav.userId === "1"
+    );
+
     return (
         <Link href={`/listing/${id}`} className="block hover:opacity-90 transition-opacity w-full h-full">
             <div
@@ -24,7 +30,16 @@ export default function ListingPreview({
 
                 <div className="relative z-10 flex flex-col gap-2">
                     {/* Image */}
-                    <ImageDisplay imageUrl={imageUrls?.[0]} />
+                    <div className="relative">
+                        <ImageDisplay imageUrl={imageUrls?.[0]} />
+                        {id && (
+                            <FavoriteButton
+                                listingId={id}
+                                userId="1" // Using "1" as the current user ID for now
+                                initialIsFavorited={isFavorited}
+                            />
+                        )}
+                    </div>
 
                     <Title title={title} />
                     <Description description={description} />
@@ -48,7 +63,7 @@ function Title({ title }: { title?: string }) {
 function Description({ description }: { description?: string }) {
     if (!description) return null;
     return(
-        <p className="text-sm leading-snug text-gray-900 dark:text-gray-100 italic">
+        <p className="text-sm leading-snug text-gray-900 dark:text-gray-100 italic line-clamp-2">
             {description}
         </p>
     )

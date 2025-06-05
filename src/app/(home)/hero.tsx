@@ -2,10 +2,11 @@ import Link from "next/link";
 import { garamond, oldStandard } from "@/app/fonts";
 import Image from "next/image";
 import InTheDark from "./in-the-dark";
+import getTotalUserCount from "@/actions/get-total-user-count";
 
-export default function HomeHero() {
+export default async function HomeHero() {
 
-  const totalUserCount = 1; // TODO: get this from the database
+  const totalUserCount = await getTotalUserCount();
 
   return (
     <section className="py-20 px-4 relative overflow-hidden rounded-md bg-white dark:bg-black min-h-[500px]">

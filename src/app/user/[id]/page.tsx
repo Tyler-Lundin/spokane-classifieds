@@ -1,10 +1,12 @@
 import React from 'react';
 
-export default function UserProfilePage({
+export default async function UserProfilePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+  console.log('unused params in /user/[id]/page.tsx', id);
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">

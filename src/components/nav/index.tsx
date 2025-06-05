@@ -26,7 +26,7 @@ export default function Nav() {
         <AnimatePresence>
             <InitialNav key="initial-nav" />
             {scrolled && <DesktopNav key="fixed-nav" />}
-            <MobileNav key="mobile-drawer" isOpen={isOpen} setIsOpen={setIsOpen} />
+            <MobileNav key="mobile-drawer" isOpen={isOpen} />
             <MobileButton key="mobile-button" isOpen={isOpen} setIsOpen={setIsOpen} />
             <Backdrop key="backdrop" isOpen={isOpen} setIsOpen={setIsOpen} />
             </AnimatePresence>

@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface ImageSliderProps {
   images: string[];
@@ -22,10 +23,12 @@ export function ImageSlider({ images }: ImageSliderProps) {
   return (
     <div className="relative w-full h-full">
       <div className="w-full h-full">
-        <img 
+        <Image 
           src={images[currentStep]} 
           alt={`Image ${currentStep + 1}`} 
           className="w-full h-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
       {images.length > 1 && (
@@ -54,6 +57,7 @@ interface ImageSliderControlsProps {
 }
 
 function ImageSliderControls({ steps, currentStep, onNext, onPrevious }: ImageSliderControlsProps) {
+  console.log('unused variables in image-slider.tsx', steps, currentStep, onNext, onPrevious);
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-full items-center flex justify-between gap-2">
       <button 

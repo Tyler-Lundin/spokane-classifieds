@@ -1,6 +1,5 @@
-import { DUMMY_USERS } from "@/data/listings.data";
+import { getUserById } from "@/data/users.data";
 
-export default async function getUserById(id: string) {
-    // TODO: Replace with actual database call
-    return DUMMY_USERS.find((user) => user.id === id);
+export default async function getUserByIdAction(id: string) {
+    return getUserById(id);
 }
