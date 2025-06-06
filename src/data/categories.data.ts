@@ -391,4 +391,14 @@ export const CATEGORIES = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: "40",
+    name: "Vintage & Collectibles",
+    slug: "vintage-collectibles",
+    type: CategoryType.PRODUCT,
+    parentId: undefined,
+    iconUrl: undefined,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }
 ] satisfies Category[];

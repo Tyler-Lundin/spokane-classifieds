@@ -1,9 +1,10 @@
 import { garamond } from "@/app/fonts";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="relative border-t-2 border-black bg-[#f4f1ea] dark:bg-black mt-8 text-black dark:text-white">
+        <footer className="relative bg-[#f4f1ea] dark:bg-black mt-8 text-black dark:text-white">
             {/* Paper texture overlay */}
             <div className="absolute inset-0 opacity-10">
                 <Image 
@@ -24,6 +25,11 @@ export default function Footer() {
                     </div>
                     <div className="text-xs text-gray-600 dark:text-white italic">
                         &quot;Your trusted local marketplace&quot;
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-white">
+                        <Link href="/privacy" className="hover:underline">
+                            Privacy Policy
+                        </Link>
                     </div>
                 </div>
             </div>

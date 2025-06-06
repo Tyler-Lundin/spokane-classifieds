@@ -4,6 +4,7 @@ import { ImageSlider } from '@/components/ui/image-slider';
 import { Button } from '@/components/ui/button';
 import { HeartIcon, Share2Icon, FlagIcon } from 'lucide-react';
 import PageContainer from '@/components/layout/page-container';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -20,6 +21,7 @@ export default async function ListingPage(props: PageProps) {
 
   return (
     <PageContainer>
+      <PageHeader title={listing.title} />
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white dark:bg-black p-4 rounded-lg">
           <div className="relative h-[500px] rounded-lg overflow-hidden">

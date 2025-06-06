@@ -8,6 +8,7 @@ interface FilterParams {
   maxPrice?: number;
   condition?: ItemCondition;
   willTrade?: boolean;
+  hasPhotos?: boolean;
   location?: {
     city?: string;
     state?: string;
@@ -42,7 +43,15 @@ export default async function getFilteredListings(params: FilterParams): Promise
   }
 
   if (params.willTrade !== undefined) {
-    filteredListings = filteredListings.filter(listing => listing.willTrade === params.willTrade);
+    if (params.willTrade) {
+      filteredListings = filteredListings.filter(listing => listing.willTrade === true);
+    }
+  }
+
+  if (params.hasPhotos !== undefined) {
+    if (params.hasPhotos) {
+      filteredListings = filteredListings.filter(listing => listing.imageUrls.length > 0);
+    }
   }
 
   if (params.location?.city) {

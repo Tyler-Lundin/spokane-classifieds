@@ -20,10 +20,10 @@ export default function ListingPreview({
     );
 
     return (
-        <Link href={`/listing/${id}`} className="block hover:opacity-90 transition-opacity w-full h-full">
+        <Link href={`/listing/${id}`} className="block hover:opacity-90 transition-opacity w-full h-full rounded-lg overflow-hidden">
             <div
                 key={id}
-                className="relative border border-black/25 bg-[#f4f1ea] dark:bg-[#3f3f3f] p-4 rounded-none w-full h-full shadow-md overflow-hidden font-serif text-black dark:text-white"
+                className="relative bg-[#f4f1ea] dark:bg-[#3f3f3f] p-4 rounded-none w-full h-full overflow-hidden font-serif text-black dark:text-white"
             >
                 {/* Paper texture overlay */}
                 <div className="absolute inset-0 bg-[url('/paper-texture.png')] opacity-10 pointer-events-none z-0" />

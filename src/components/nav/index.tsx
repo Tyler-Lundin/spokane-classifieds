@@ -14,7 +14,7 @@ export default function Nav() {
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 320); // 320px is the height of the initial nav (h-64)
+            setScrolled(window.scrollY > 282);
         }
 
         window.addEventListener("scroll", handleScroll);

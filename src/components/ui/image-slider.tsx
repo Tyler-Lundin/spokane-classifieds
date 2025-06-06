@@ -6,10 +6,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 
 interface ImageSliderProps {
-  images: string[];
+  images?: string[];
 }
 
-export function ImageSlider({ images }: ImageSliderProps) {
+export function ImageSlider({ images = [] }: ImageSliderProps) {
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNext = () => {
@@ -19,6 +19,16 @@ export function ImageSlider({ images }: ImageSliderProps) {
   const handlePrevious = () => {
     setCurrentStep((prev) => (prev - 1 + images.length) % images.length);
   };
+
+  if (images.length === 0) {
+    return (
+      <div className="relative w-full h-full bg-gray-100 dark:bg-gray-800">
+        <div className="w-full h-full flex items-center justify-center">
+          <p className="text-gray-400 dark:text-gray-600 text-sm">No image available</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full">

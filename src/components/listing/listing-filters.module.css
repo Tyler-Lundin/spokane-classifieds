@@ -1,0 +1,55 @@
+.collapsibleContent {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.collapsibleContent[data-state="open"] {
+  animation-name: slideDown;
+}
+
+.collapsibleContent[data-state="closed"] {
+  animation-name: slideUp;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.trigger {
+  cursor: pointer;
+  user-select: none;
+}
+
+.trigger:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .trigger:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chevron {
+  transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.chevron[data-state="open"] {
+  transform: rotate(180deg);
+} 

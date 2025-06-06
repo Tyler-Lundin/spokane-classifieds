@@ -4,13 +4,14 @@ import ListingPreview from '@/components/listing/listing-preview';
 import ListingFilters from '@/components/listing/listing-filters';
 import { ListingType, ItemCondition } from '@/types/app.types';
 import React from 'react';
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export default async function ListingsPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { categoryId, type, minPrice, maxPrice, condition, willTrade, city, state, search, sortBy, sortOrder } = await searchParams;
+  const { categoryId, type, minPrice, maxPrice, condition, willTrade, hasPhotos, city, state, search, sortBy, sortOrder } = await searchParams;
   const listings = await getFilteredListings({
     categoryId: categoryId === 'all' ? undefined : categoryId as string,
     type: type === 'all' ? undefined : type as ListingType,
@@ -18,6 +19,7 @@ export default async function ListingsPage({
     maxPrice: maxPrice ? Number(maxPrice) : undefined,
     condition: condition === 'all' ? undefined : condition as ItemCondition,
     willTrade: willTrade === 'true',
+    hasPhotos: hasPhotos === 'true',
     location: {
       city: city as string,
       state: state as string,
@@ -29,9 +31,9 @@ export default async function ListingsPage({
 
   return (
     <PageContainer>
-      <h1 className="text-3xl font-bold pb-6 text-black dark:text-white text-center bg-white dark:bg-black">All Listings</h1>
-      <div className="flex flex-col md:flex-row">
-        <aside className="w-full md:w-64">
+      <PageHeader title="All Listings" />
+      <div className="flex flex-col md:flex-row gap-4">
+        <aside className="w-full md:w-64 shrink-0">
           <ListingFilters />
         </aside>
         <div className="flex-1">

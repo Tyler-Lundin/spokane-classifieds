@@ -3,7 +3,7 @@ import Links from "./links";
 import { cn } from "@/lib/utils";
 
 
-const DESKTOP_NAV_CN = cn("m-4 rounded-full border border-black/10 dark:border-white/10", "bg-white/80 dark:bg-black/80 backdrop-blur-sm text-black dark:text-white", "fixed top-0 left-0 right-0 w-fit whitespace-nowrap px-8 mx-auto z-50", "h-12 items-center flex justify-center", "hidden md:flex");
+const DESKTOP_NAV_CN = cn("m-4 ", "fixed top-0 left-0 right-0 w-fit whitespace-nowrap mx-auto z-50", "h-12 items-center flex justify-center", "hidden md:flex");
 
 
 export default function DesktopNav() {

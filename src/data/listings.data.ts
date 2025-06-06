@@ -58,7 +58,7 @@ export const DUMMY_LISTINGS: Listing[] = [
     {
         id: "3",
         userId: "1",
-        categoryId: "3",
+        categoryId: "21",
         title: "HIRING: Suncrest Mart",
         type: ListingType.JOB,
         description: "We are hiring for a new manager at Suncrest Mart. The store is located in the heart of the city and is a great place to work. The store is open 24 hours a day and is a great place to work.",
@@ -84,7 +84,7 @@ export const DUMMY_LISTINGS: Listing[] = [
     {
         id: "4",
         userId: "1",
-        categoryId: "4",
+        categoryId: "3",
         title: "2010 Mercedes Benz C300",
         type: ListingType.VEHICLE,
         description: "This is a 2010 Mercedes Benz C300 4MATIC (awd) Sport Sedan. It has 171,000 miles on it, a little rough around the edges, but still a great car.",
@@ -110,7 +110,7 @@ export const DUMMY_LISTINGS: Listing[] = [
     {
         id: "5",
         userId: "user123",
-        categoryId: "cat001",
+        categoryId: "1",
         title: "Used MacBook Pro 2020",
         type: ListingType.ITEM,
         willTrade: false,
@@ -133,7 +133,7 @@ export const DUMMY_LISTINGS: Listing[] = [
       {
         id: "6",
         userId: "user456",
-        categoryId: "cat002",
+        categoryId: "18",
         title: "Mountain Bike - Trek Marlin 5",
         type: ListingType.ITEM,
         willTrade: true,
@@ -156,7 +156,7 @@ export const DUMMY_LISTINGS: Listing[] = [
       {
         id: "7",
         userId: "user789",
-        categoryId: "cat003",
+        categoryId: "1",
         title: "Gaming PC - RTX 3080, Ryzen 7",
         type: ListingType.ITEM,
         willTrade: false,
@@ -179,7 +179,7 @@ export const DUMMY_LISTINGS: Listing[] = [
       {
         id: "8",
         userId: "user321",
-        categoryId: "cat004",
+        categoryId: "40",
         title: "Vintage Vinyl Collection",
         type: ListingType.ITEM,
         willTrade: true,
@@ -202,7 +202,7 @@ export const DUMMY_LISTINGS: Listing[] = [
       {
         id: "9",
         userId: "user654",
-        categoryId: "cat005",
+        categoryId: "1",
         title: "iPhone 13 - 128GB, Unlocked",
         type: ListingType.ITEM,
         willTrade: false,
@@ -225,7 +225,7 @@ export const DUMMY_LISTINGS: Listing[] = [
       {
         id: "10",
         userId: "user987",
-        categoryId: "cat006",
+        categoryId: "2",
         title: "Free Couch - Must Pick Up",
         type: ListingType.HOUSING,
         willTrade: false,
